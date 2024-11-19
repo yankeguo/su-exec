@@ -1,0 +1,13 @@
+FROM debian:12 AS builder
+
+RUN apt-get update && apt-get upgrade -y && apt-get install build-essential -y
+
+WORKDIR /work
+
+ADD . .
+
+RUN make
+
+FROM scratch
+
+COPY --from=builder /work/su-exec /su-exec
